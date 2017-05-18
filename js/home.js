@@ -37,7 +37,7 @@ $(function() {
 
               $("#liste_button")
               .append($("<div class='btn-group ul_btn' role='group'>")
-              .append($("<button type='button' class='btn btn-primary'>")
+              .append($("<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#myModal'>")
               .text("modifier").on("click",tasks[i],modifier))
               .append($("<button type='button' class='btn btn-danger'>")
               .text("supprimer").on("click",tasks[i],supprimer)));
@@ -55,10 +55,47 @@ $(function() {
       // formTask();
       // fillFormTask(event.data);
     }
+    //
+    // <div class="col-md-6">
+    //   <input type="text" class="form-control" placeholder="Question" aria-describedby="basic-addon1">
+    // </div>
+    // <div class="col-md-6">
+    //   <input type="text" class="form-control" placeholder="Réponse" aria-describedby="basic-addon1">
+    //
+    // </div>
 
     function modifier(event)
     {
-      alert("modifier");
+      $("#title_modal").text(event.data.title);
+      $("#title_quest").attr("placeholder", event.data.title);
+      $("#questions").empty();
+      let data = event.data.description
+      for(var k in data)
+      {
+        $("#questions")
+        .append($("<div class='col-md-5' role='group'>")
+        .append($("<input type='text' class='form-control' placeholder="+k+" aria-describedby='basic-addon1'>")
+        ));
+
+        $("#questions")
+        .append($("<div class='col-md-5' role='group'>")
+        .append($("<input type='text' class='form-control' placeholder="+data[k]+" aria-describedby='basic-addon1'>")
+        ));
+        $("#questions")
+        .append($("<div class='col-md-2' role='group'>")
+        .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-remove' aria-hidden='true'>").on("click",data[k],data,supprimerQuestion)
+        ));
+      }
+
+      $("#SaveChanges").on("click", event.data, SaveChanges)
+    }
+
+    function SaveChanges() {
+      alert("Save Changes");
+    }
+
+    function supprimerQuestion() {
+      console.log("supprimerQuestion");
     }
 
     function supprimer(event)
