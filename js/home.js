@@ -1,5 +1,6 @@
 $(function() {
 
+    var data;
     $("#button").click(refreshTaskList);
 
     function refreshTaskList(){
@@ -66,6 +67,7 @@ $(function() {
 
     function modifier(event)
     {
+      data = event.data;
       $("#title_modal").text(event.data.title);
       $("#title_quest").attr("placeholder", event.data.title);
       $("#questions").empty();
@@ -74,7 +76,7 @@ $(function() {
       {
         $("#questions")
         .append($("<div class='col-md-5' role='group'>")
-        .append($("<input type='text' class='form-control' placeholder="+k+" aria-describedby='basic-addon1'>")
+        .append($("<input type='text' class='form-control'  aria-describedby='basic-addon1'>").attr("placeholder", k)
         ));
 
         $("#questions")
@@ -87,10 +89,50 @@ $(function() {
         ));
       }
 
+      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion))
+    );
+
       $("#SaveChanges").on("click", event.data, SaveChanges)
     }
 
+    function ajouterQuestion()
+    {
+      $("#plus").remove();
+      $("#questions")
+      .append($("<div class='col-md-5' role='group'>")
+      .append($("<input type='text' class='form-control question'  aria-describedby='basic-addon1'>")
+      ));
+
+      $("#questions")
+      .append($("<div class='col-md-5' role='group'>")
+      .append($("<input type='text' class='form-control reponse' aria-describedby='basic-addon1'>")
+      ));
+      $("#questions")
+      .append($("<div class='col-md-2' role='group'>")
+      .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-remove' aria-hidden='true'>").on("click",supprimerQuestion)
+
+
+      ));
+
+      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
+
+    }
+
     function SaveChanges() {
+      var quests = $("#questions").children("input");
+      let dico = {};
+      let dicoKey;
+      quests.each(function()
+      {
+        if (this.value.attr("class") == "form-control question")
+        {
+          dicoKey = this.value.text();
+        }
+        else
+        {
+          dico[dicoKey] = this.value.text();
+        }
+      })
       alert("Save Changes");
     }
 
