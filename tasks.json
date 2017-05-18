@@ -2,11 +2,13 @@
   "quizz": [
     {
       "title": "Quizz Geo du monde",
-      "description": {"Capital du Portugal " : "Lisbonne", "Capital du Brésil" : "Brazilia"},
+      "description": {
+        "Capital du Portugal ": "Lisbonne",
+        "Capital du Brésil": "Brazilia"
+      },
       "done": false,
       "uri": "http://localhost:3000/quizz/1",
       "id": 1
     }
-
   ]
 }
