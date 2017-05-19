@@ -1,6 +1,7 @@
+
+
 $(function() {
 
-    var data;
     $("#button").click(refreshTaskList);
 
     function refreshTaskList(){
@@ -67,12 +68,12 @@ $(function() {
 
     function modifier(event)
     {
-      data = event.data;
+      let data = event.data;
       $("#title_modal").text(event.data.title);
       $("#title_quest").attr("placeholder", event.data.title);
       $("#questions").empty();
-      let data = event.data.description
-      for(var k in data)
+      let datas = event.data.description
+      for(var k in datas)
       {
         $("#questions")
         .append($("<div class='col-md-5' role='group'>")
@@ -81,18 +82,18 @@ $(function() {
 
         $("#questions")
         .append($("<div class='col-md-5' role='group'>")
-        .append($("<input type='text' class='form-control' placeholder="+data[k]+" aria-describedby='basic-addon1'>")
+        .append($("<input type='text' class='form-control' placeholder="+datas[k]+" aria-describedby='basic-addon1'>")
         ));
         $("#questions")
         .append($("<div class='col-md-2' role='group'>")
-        .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-remove' aria-hidden='true'>").on("click",data[k],data,supprimerQuestion)
+        .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-remove' aria-hidden='true'>").on("click",datas[k],data,supprimerQuestion)
         ));
       }
 
       $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion))
     );
 
-      $("#SaveChanges").on("click", event.data, SaveChanges)
+      $("#SaveChanges").on("click",data, SaveChanges)
     }
 
     function ajouterQuestion()
@@ -118,22 +119,63 @@ $(function() {
 
     }
 
-    function SaveChanges() {
-      var quests = $("#questions").children("input");
+    function Task(title, description, uri){
+        this.title = title;
+        this.description = description;
+        this.uri = uri;
+        console.log(this.uri);
+    }
+
+    function SaveChanges(event) {
       let dico = {};
       let dicoKey;
-      quests.each(function()
+      let data = event.data;
+      $("#questions").children("input").each(function()
       {
+        console.log(this);
         if (this.value.attr("class") == "form-control question")
         {
-          dicoKey = this.value.text();
+          if (this.value.text() == "" || typeof this.value.text() === 'undefined')
+            dicoKey = this.value.attr("placeholder");
+          else
+            dicoKey = this.value.text();
         }
         else
         {
-          dico[dicoKey] = this.value.text();
+          console.log("text");
+          console.log(this.value.text());
+          if (this.value.text() == "" || typeof this.value.text() === 'undefined')
+            dico[dicoKey] = this.value.attr("placeholder");
+          else
+            dico[dicoKey] = this.value.text();
         }
+      });
+      var formdata = new FormData();
+      //console.log("dico");
+      //console.log(dico);
+      var task = new Task(
+        data.title,
+        dico,
+        data.uri
+      );
+      formdata.append("json", JSON.stringify(task));
+      let url = task.uri;
+      let init =
+      {
+        headers : {
+          Accept : 'application/json',
+          contentType: "application/json"
+        },
+        method : "PUT",
+        body : formdata
+      };
+      fetch(url, init)
+      .then(response =>
+      {
+        console.log("Update Success");
       })
-      alert("Save Changes");
+      .catch(err => {console.warn(err)});
+      refreshTaskList();
     }
 
     function supprimerQuestion() {
