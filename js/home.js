@@ -110,62 +110,51 @@ $(function() {
       ));
       $("#questions")
       .append($("<div class='col-md-2' role='group'>")
-      .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-remove' aria-hidden='true'>").on("click",supprimerQuestion)
-
-
+      .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append($("<span class='glyphicon glyphicon-remove' aria-hidden='true'>")).on("click",supprimerQuestion)
       ));
 
       $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
 
     }
 
-    function Task(title, description, uri){
+    function Task(title, description, uri, id){
         this.title = title;
         this.description = description;
         this.uri = uri;
-        console.log(this.uri);
+        this.id = id;
     }
 
     function SaveChanges(event) {
       let dico = {};
       let dicoKey;
       let data = event.data;
-      $("#questions").children("input").each(function()
+      let i = 0;
+      $("#questions > div > input").each(function()
       {
-        console.log(this);
-        if (this.value.attr("class") == "form-control question")
+
+        if (i%2 == 0)
         {
-          if (this.value.text() == "" || typeof this.value.text() === 'undefined')
-            dicoKey = this.value.attr("placeholder");
+          if (this.value == "" || typeof this.value === 'undefined' || this.value == "undefined")
+            dicoKey = this.placeholder;
           else
-            dicoKey = this.value.text();
+            dicoKey = this.value;
         }
         else
         {
-          console.log("text");
-          console.log(this.value.text());
-          if (this.value.text() == "" || typeof this.value.text() === 'undefined')
-            dico[dicoKey] = this.value.attr("placeholder");
+          if (this.value == "" || typeof this.value === 'undefined' || this.value == "undefined")
+            dico[dicoKey] = this.placeholder;
           else
-            dico[dicoKey] = this.value.text();
+            dico[dicoKey] = this.value;
         }
+        i++;
       });
       var formdata = new FormData();
       //console.log("dico");
-      //console.log(dico);
-      var task = new Task(
-        data.title,
-        dico,
-        data.uri
-      );
-      formdata.append("json", JSON.stringify(task));
-      let url = task.uri;
+
+      formdata.append( "json" , JSON.stringify({title : data.title, description : dico, uri : data.uri, id : data.uri})  );
+      let url = data.uri;
       let init =
       {
-        headers : {
-          Accept : 'application/json',
-          contentType: "application/json"
-        },
         method : "PUT",
         body : formdata
       };
@@ -175,7 +164,8 @@ $(function() {
         console.log("Update Success");
       })
       .catch(err => {console.warn(err)});
-      refreshTaskList();
+
+      setTimeout(refreshTaskList, 100);
     }
 
     function supprimerQuestion() {
