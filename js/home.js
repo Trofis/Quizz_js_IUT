@@ -76,58 +76,55 @@ $(function() {
       for(var k in datas)
       {
         $("#questions")
+        .append($("<div class='group-question'>")
         .append($("<div class='col-md-5' role='group'>")
-        .append($("<input type='text' class='form-control'  aria-describedby='basic-addon1'>").attr("placeholder", k)
-        ));
-
-        $("#questions")
+        .append($("<input type='text' class='form-control question'  aria-describedby='basic-addon1'>").attr("placeholder", k)
+        ))
         .append($("<div class='col-md-5' role='group'>")
-        .append($("<input type='text' class='form-control' placeholder="+datas[k]+" aria-describedby='basic-addon1'>")
-        ));
-        $("#questions")
+        .append($("<input type='text' class='form-control reponse' aria-describedby='basic-addon1'>").attr("placeholder", datas[k])
+        ))
         .append($("<div class='col-md-2' role='group'>")
-        .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-remove' aria-hidden='true'>").on("click",datas[k],data,supprimerQuestion)
-        ));
+        .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append($("<span class='glyphicon glyphicon-remove' aria-hidden='true'>")).on("click",supprimerQuestion)
+        )));
+
+
       }
 
-      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion))
-    );
+      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
 
-      $("#SaveChanges").on("click",data, SaveChanges)
+      $("#SaveChanges").on("click",data, SaveChanges);
     }
 
     function ajouterQuestion()
     {
       $("#plus").remove();
       $("#questions")
+      .append($("<div class='group-question'>")
       .append($("<div class='col-md-5' role='group'>")
       .append($("<input type='text' class='form-control question'  aria-describedby='basic-addon1'>")
-      ));
-
-      $("#questions")
+      ))
       .append($("<div class='col-md-5' role='group'>")
       .append($("<input type='text' class='form-control reponse' aria-describedby='basic-addon1'>")
-      ));
-      $("#questions")
+      ))
       .append($("<div class='col-md-2' role='group'>")
       .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append($("<span class='glyphicon glyphicon-remove' aria-hidden='true'>")).on("click",supprimerQuestion)
-      ));
+      )));
 
       $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
 
     }
 
-    function Task(title, description, uri, id){
+    function Task(title, description, uri){
         this.title = title;
         this.description = description;
         this.uri = uri;
-        this.id = id;
     }
 
     function SaveChanges(event) {
+
       let dico = {};
       let dicoKey;
-      let data = event.data;
+      let dataEvent = event.data;
       let i = 0;
       $("#questions > div > input").each(function()
       {
@@ -148,15 +145,26 @@ $(function() {
         }
         i++;
       });
-      var formdata = new FormData();
+      var dicoJson = JSON.stringify(dico);
+
+      var task = new Task(
+        dataEvent.title,
+        dicoJson,
+        dataEvent.uri
+      )
+      var data = new FormData();
       //console.log("dico");
 
-      formdata.append( "json" , JSON.stringify({title : data.title, description : dico, uri : data.uri, id : data.uri})  );
-      let url = data.uri;
+      data.append( "json" , JSON.stringify(task));
+      let url = dataEvent.uri;
       let init =
       {
+        headers : {
+          Accept : 'application/json',
+          contentType: "application/json"
+        },
         method : "PUT",
-        body : formdata
+        body : data
       };
       fetch(url, init)
       .then(response =>
@@ -168,9 +176,14 @@ $(function() {
       setTimeout(refreshTaskList, 100);
     }
 
-    function supprimerQuestion() {
+    function supprimerQuestion(event) {
       console.log("supprimerQuestion");
+      console.log(event.target);
+      console.log($(event.target).parent().parent());
+      $(event.target).parent().parent().remove();
     }
+
+
 
     function supprimer(event)
     {
