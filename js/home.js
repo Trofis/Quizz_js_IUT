@@ -32,7 +32,7 @@ $(function() {
               console.log(tasks[i]);
               $('#quizz_list')
               .append($('<li class="list-group-item">')
-              .append($('<a href='+url+"Quizz.html/"+tasks[i]["id"]+'>')
+              .append($('<a href='+url+"Quizz.html?id="+tasks[i]["id"]+'>')
                   .text(tasks[i].title)
                   ).on("click", tasks[i], goTo)
               );
