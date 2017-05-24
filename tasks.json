@@ -3,14 +3,15 @@
     {
       "title": "Quizz Geo du monde",
       "description": {"Capital du Portugal " : "Lisbonne", "Capital du Brésil" : "Brazilia"},
-      "done": false,
       "uri": "http://localhost:3000/quizz/1",
       "id": 1
     },
     {
       "title": "Quizz histoire de France",
-      "description": {" Nom du Roi Soleil  " : "Louis XIV", "Qui affronté la France pendant la bataille de Trafalgar" : "L'Angleterre"},
-      "done": false,
+      "description": {
+        " Nom du Roi Soleil  ": "Louis XIV",
+        "Qui affronté la France pendant la bataille de Trafalgar": "L'Angleterre"
+      },
       "uri": "http://localhost:3000/quizz/2",
       "id": 2
     }

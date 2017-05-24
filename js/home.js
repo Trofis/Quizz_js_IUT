@@ -32,7 +32,7 @@ $(function() {
               console.log(tasks[i]);
               $('#quizz_list')
               .append($('<li class="list-group-item">')
-              .append($('<a href='+url+"Quizz.html/"+tasks[i]["id"]+'>')
+              .append($('<a href='+url+"Quizz.html?id="+tasks[i]["id"]+'>')
                   .text(tasks[i].title)
                   ).on("click", tasks[i], goTo)
               );
@@ -117,6 +117,7 @@ $(function() {
     function Task(title, description, uri){
         this.title = title;
         this.description = description;
+        this
         this.uri = uri;
     }
 
@@ -126,7 +127,7 @@ $(function() {
       let dicoKey;
       let dataEvent = event.data;
       let i = 0;
-      $("#questions > div > input").each(function()
+      $("#questions div > div > input").each(function()
       {
 
         if (i%2 == 0)
@@ -146,10 +147,10 @@ $(function() {
         i++;
       });
       var dicoJson = JSON.stringify(dico);
-
+      console.log(dicoJson);
       var task = new Task(
         dataEvent.title,
-        dicoJson,
+        dico,
         dataEvent.uri
       )
       var data = new FormData();
@@ -170,7 +171,13 @@ $(function() {
       .then(response =>
       {
         console.log("Update Success");
+        return response;
       })
+      .then(response =>
+        {
+          console.log(response);
+        }
+      )
       .catch(err => {console.warn(err)});
 
       setTimeout(refreshTaskList, 100);
