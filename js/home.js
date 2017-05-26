@@ -12,13 +12,14 @@ $(function() {
         {
           if (response.ok)
           {
-            console.log("nice !");
             return response.json();
           }
           else
             throw new Error('Pb ajax :'+response.status);
         })
         .then(response => {
+          console.log(response);
+
           remplirTaches(response);
         });
         }
@@ -72,16 +73,19 @@ $(function() {
       $("#title_modal").text(event.data.title);
       $("#title_quest").attr("placeholder", event.data.title);
       $("#questions").empty();
-      let datas = event.data.description
-      for(var k in datas)
+      let questions = event.data.questions.split(",");
+      let reponses = event.data.reponses.split(",");
+      $("#title_quest").removeAttr('value');
+      $("#title_quest").text("");
+      for(var i = 0; i < questions.length; i++)
       {
         $("#questions")
         .append($("<div class='group-question'>")
         .append($("<div class='col-md-5' role='group'>")
-        .append($("<input type='text' class='form-control question'  aria-describedby='basic-addon1'>").attr("placeholder", k)
+        .append($("<input type='text' class='form-control question'  aria-describedby='basic-addon1'>").attr("placeholder", questions[i])
         ))
         .append($("<div class='col-md-5' role='group'>")
-        .append($("<input type='text' class='form-control reponse' aria-describedby='basic-addon1'>").attr("placeholder", datas[k])
+        .append($("<input type='text' class='form-control reponse' aria-describedby='basic-addon1'>").attr("placeholder", reponses[i])
         ))
         .append($("<div class='col-md-2' role='group'>")
         .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append($("<span class='glyphicon glyphicon-remove' aria-hidden='true'>")).on("click",supprimerQuestion)
@@ -114,17 +118,16 @@ $(function() {
 
     }
 
-    function Task(title, description, uri){
+    function Quizz(title, questions,reponses){
         this.title = title;
-        this.description = description;
-        this
-        this.uri = uri;
+        this.questions = questions;
+        this.reponses = reponses;
     }
 
     function SaveChanges(event) {
 
-      let dico = {};
-      let dicoKey;
+      let questions = "";
+      let reponses = "";
       let dataEvent = event.data;
       let i = 0;
       $("#questions div > div > input").each(function()
@@ -133,39 +136,38 @@ $(function() {
         if (i%2 == 0)
         {
           if (this.value == "" || typeof this.value === 'undefined' || this.value == "undefined")
-            dicoKey = this.placeholder;
+            questions += this.placeholder+",";
           else
-            dicoKey = this.value;
+            questions +=this.value+",";
         }
         else
         {
           if (this.value == "" || typeof this.value === 'undefined' || this.value == "undefined")
-            dico[dicoKey] = this.placeholder;
+            reponses+= this.placeholder+",";
           else
-            dico[dicoKey] = this.value;
+            reponses+= this.value+",";
+
         }
         i++;
       });
-      var dicoJson = JSON.stringify(dico);
-      console.log(dicoJson);
-      var task = new Task(
+      questions.slice(0,-1);
+      reponses.slice(0,-1);
+      //var dicoJson = JSON.stringify(dico);
+      //console.log(dicoJson);
+      var quizz = new Quizz(
         dataEvent.title,
-        dico,
-        dataEvent.uri
+        questions,
+        reponses
       )
       var data = new FormData();
       //console.log("dico");
 
-      data.append( "json" , JSON.stringify(task));
+      data.append( "json" , JSON.stringify({"title" : "lol"}));
       let url = dataEvent.uri;
       let init =
       {
-        headers : {
-          Accept : 'application/json',
-          contentType: "application/json"
-        },
         method : "PUT",
-        body : data
+        body : JSON.stringify({"title" : "lol", "questions" : questions, "reponses" : reponses, "uri" : dataEvent.uri, "id":dataEvent.id})
       };
       fetch(url, init)
       .then(response =>

@@ -24,12 +24,49 @@
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><a href="ajouterQuizz.html">Ajouter Quizz</a></li>
+              <li class="active"><a href="ajouterQuizz.html">Ajouter Quizz</a></li>
             </ul>
           </div>
         </div>
       </nav>
 
+      <div class="col-md-12" style="margin-bottom:2%;">
+        <div class="form-group">
+          <label for="Title">Quizz title</label>
+          <input type="text" class="form-control" id="Title" placeholder="Title Quizz">
+        </div>
+      </div>
+
+      <div >
+        <div id="QuestRes" >
+          <div class="col-md-6">
+            <label for="Question">Question name</label>
+            <input type="text" class="form-control" id="Question" placeholder="Question ?">
+          </div>
+
+          <div class="col-md-6">
+            <label for="reponse">Question answer</label>
+            <input type="text" class="form-control" id="reponse" placeholder="Answer">
+          </div>
+        </div>
+
+
+
+        <div class="col-md-12" style="margin-top:2%;">
+          <button id="ajouterQuestRes" type="button" class="btn btn-primary" name="addQuestion"><span class="glyphicon glyphicon-plus"></span></button>
+        </div>
+
+      </div>
+      <hr>
+      <div class="col-md-12" style="margin-top:2%;">
+        <button type="button" style="float:right;overflow:auto;" class="btn btn-success" id="AddQuest" name="addQuestion">Ajouter Questionnaire</button>
+      </div>
+
+
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/ajouterQuizz.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>

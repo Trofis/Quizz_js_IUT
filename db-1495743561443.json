@@ -1,0 +1,11 @@
+{
+  "quizz": [
+    {
+      "title": "Quizz Geo du monde",
+      "questions": "Capital du Portugal,Capital du Brésil",
+      "reponses": "Lisbonne,Brazilia",
+      "uri": "http://localhost:3000/quizz/1",
+      "id": 1
+    }
+  ]
+}
