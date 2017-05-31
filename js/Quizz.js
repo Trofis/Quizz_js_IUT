@@ -19,6 +19,7 @@ $(function() {
       });
       $('#VerifQuizz').on("click",tasks,verifieQuizz);
     }
+    AfficheQuizzEnQuestion();
     function AfficheQuizzEnQuestion(){
       var id=getUrlParameter("id");
       var adresse = "http://localhost:3000/quizz/"+id;
@@ -51,30 +52,32 @@ $(function() {
         }
     }
 }
-    AfficheQuizzEnQuestion();
+
   function verifieQuizz(event){
-    alert("ok");
     var repQ =[];
     var Compteur=0;
     $('input').each(function(){
-      repQ.append(this.value);
+      repQ.push(this.value);
     });
     $('#NomduQuizz').empty();
-    $('#NomduQuizz').text("Réponse au quizz "+tasks.title)
+    $('#NomduQuizz').text("Reponse au quizz "+event.data.title)
     $('#Question').empty();
     $('#Question')
     .append($('<table id="Table">'));
-    var res=tasks.questions.split(",");
-    var rep=tasks.reponses.split(",");
+    var res=event.data.questions.split(",");
+    var rep=event.data.reponses.split(",");
     var i=0;
     $.each(res,function(index,value){
       $('#Table')
       .append($('<tr>')
       .append($('<td>')
-      .text("La réponse à la question "+value+" est"+rep[i])+" et vous avez mis"+repQ[i]))
+      .text("La réponse à la question "+value+" est "+rep[i]+" et vous avez mis "+repQ[i])));
       if(rep[i]==repQ[i])
         Compteur+=1;
+      i++;
   });
-  $('#Question').text("Vous avez donc un score de "+Compteur+" sur ce Quizz")
+  $('#Question').append($("<p>").text("Vous avez donc un score de "+Compteur+" sur ce Quizz"));
+  $('#VerifQuizz').attr("Value","Retour")
+  $('#VerifQuizz').on("click",function(){window.location="home.html"});
   }
 });
