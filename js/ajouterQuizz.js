@@ -12,11 +12,11 @@ $( "#ajouterQuestRes" ).click(function() {
   console.log("QuestRes added");
 });
 
-function Quizz(title, questions,reponses, uri){
+function Quizz(title, questions,reponses){
     this.title = title;
     this.questions = questions;
     this.reponses = reponses;
-    this.uri = uri;
+    this.uri = "";
 }
 
 function supprimerQuestion(event) {
@@ -31,39 +31,73 @@ $("#first").on("click",supprimerQuestion);
 
 $( "#AddQuest" ).click(function() {
     let titre = $("#Title").val();
-    let questions = "";
-    let reponses = "";
-    $("#QuestRes > div > div > input").each(function()
+    if (titre== "")
     {
-      if (this.id=="Question")
-        questions+=this.value+",";
-      else
-        reponses+=this.value+",";
-    });
+      $("#alert_div").append($("<div id='alert' class='alert alert-danger' role='alert'>").text("Vous devez mettre un titre au moins !"));
 
-    questions.slice(-1);
-    reponses.slice(-1);
-    let quizz = new Quizz(
-        titre,
-        questions,
-        reponses,
-        uri
-        );
-    console.log(JSON.stringify(quizz));
-    let url = "http://localhost:3000/quizz";
-    let init = {
-      headers :{
-        'Accept' : 'application/json',
-        'Content-Type' : 'application/json'
-      },
-      method : "POST",
-      body : JSON.stringify(quizz)
-    };
-    fetch(url, init)
-    .then(response =>
+      setTimeout(function(){$("#alert").remove()}, 5000);
+
+      $("#title_form").attr("class", "form-group has-error");
+    }
+    else
     {
-      console.log("Save Ok");
-    })
-    .catch(err => {console.warn(err)});
+      let questions = "";
+      let reponses = "";
+      $("#QuestRes > div > div > input").each(function()
+      {
+        if (this.id=="Question")
+          questions+=this.value+",";
+        else
+          reponses+=this.value+",";
+      });
+
+      questions.slice(-1);
+      reponses.slice(-1);
+      let quizz = new Quizz(
+          titre,
+          questions,
+          reponses
+          );
+      console.log(JSON.stringify(quizz));
+      let url = "http://localhost:3000/quizz";
+      let init = {
+        headers :{
+          'Accept' : 'application/json',
+          'Content-Type' : 'application/json'
+        },
+        method : "POST",
+        body : JSON.stringify(quizz)
+      };
+      fetch(url, init)
+      .then(response =>
+      {
+        console.log("Save Ok");
+        console.log(response)
+        return response.json();
+      })
+      .then(response =>
+      {
+        console.log(response);
+        console.log(response.id);
+        let url_2 = "http://localhost:3000/quizz/"+response.id;
+        let init_2 = {
+          headers :{
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json'
+          },
+          method : "PATCH",
+          body : JSON.stringify({"uri":url_2})
+        };
+        fetch(url_2, init_2)
+        .then(response =>
+        {
+          console.log("Save Ok");
+          $("#alert_div").append($("<div id='alert' class='alert alert-success' role='alert'>").text("Questionnaire ajouté !"));
+          $("#title_form").attr("class", "form-group");
+          setTimeout(function(){$("#alert").remove()}, 5000);
+        })
+      });
+    }
+
 
 });

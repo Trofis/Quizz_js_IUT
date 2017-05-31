@@ -2,10 +2,24 @@
   "quizz": [
     {
       "title": "Quizz Geo du monde",
-      "questions": "Capital du Portugal,Capital du Brésil,",
-      "reponses": "Porto,Brazilia,",
+      "questions": "Capital du Portugal,Capital du Brésil,Capital de la France",
+      "reponses": "Porto,Brazilia,Paris",
       "uri": "http://localhost:3000/quizz/1",
       "id": 1
+    },
+    {
+      "title": "Lol",
+      "questions": ",",
+      "reponses": ",",
+      "uri": "http://localhost:3000/quizz/2",
+      "id": 2
+    },
+    {
+      "title": "Miam",
+      "questions": ",",
+      "reponses": ",",
+      "uri": "http://localhost:3000/quizz/3",
+      "id": 3
     }
   ]
 }

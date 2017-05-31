@@ -94,7 +94,7 @@ $(function() {
 
       }
 
-      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
+      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' style='margin-top:1%;' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
 
       $("#SaveChanges").on("click",data, SaveChanges);
     }
@@ -114,7 +114,7 @@ $(function() {
       .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append($("<span class='glyphicon glyphicon-remove' aria-hidden='true'>")).on("click",supprimerQuestion)
       )));
 
-      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
+      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' style='margin-top:1%;' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
 
     }
 
@@ -151,18 +151,30 @@ $(function() {
         }
         i++;
       });
+      let newQuestions="";
+      let newReponses="";
+
       console.log(questions);
       console.log(reponses);
-      questions.substring(0, questions.length-1);
-      reponses.slice(0, reponses.length-1);
-      console.log(questions);
-      console.log(reponses);
+      for(let i = 0; i<questions.length;i++)
+      {
+        if (i != questions.length-1)
+          newQuestions += questions[i];
+      }
+      for(let i = 0; i<reponses.length;i++)
+      {
+        if (i != reponses.length-1)
+          newReponses += reponses[i];
+      }
+
+      console.log(newQuestions);
+      console.log(newReponses);
       //var dicoJson = JSON.stringify(dico);
       //console.log(dicoJson);
       var quizz = new Quizz(
         dataEvent.title,
-        questions,
-        reponses,
+        newQuestions,
+        newReponses,
         dataEvent.uri
       )
       //console.log("dico");
