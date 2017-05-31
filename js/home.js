@@ -12,13 +12,14 @@ $(function() {
         {
           if (response.ok)
           {
-            console.log("nice !");
             return response.json();
           }
           else
             throw new Error('Pb ajax :'+response.status);
         })
         .then(response => {
+          console.log(response);
+
           remplirTaches(response);
         });
         }
@@ -32,7 +33,7 @@ $(function() {
               console.log(tasks[i]);
               $('#quizz_list')
               .append($('<li class="list-group-item">')
-              .append($('<a href='+url+"Quizz.html/"+tasks[i]["id"]+'>')
+              .append($('<a href='+url+"Quizz.html?id="+tasks[i]["id"]+'>')
                   .text(tasks[i].title)
                   ).on("click", tasks[i], goTo)
               );
@@ -72,16 +73,19 @@ $(function() {
       $("#title_modal").text(event.data.title);
       $("#title_quest").attr("placeholder", event.data.title);
       $("#questions").empty();
-      let datas = event.data.description
-      for(var k in datas)
+      let questions = event.data.questions.split(",");
+      let reponses = event.data.reponses.split(",");
+      $("#title_quest").removeAttr('value');
+      $("#title_quest").text("");
+      for(var i = 0; i < questions.length; i++)
       {
         $("#questions")
         .append($("<div class='group-question'>")
         .append($("<div class='col-md-5' role='group'>")
-        .append($("<input type='text' class='form-control question'  aria-describedby='basic-addon1'>").attr("placeholder", k)
+        .append($("<input type='text' class='form-control question'  aria-describedby='basic-addon1'>").attr("placeholder", questions[i])
         ))
         .append($("<div class='col-md-5' role='group'>")
-        .append($("<input type='text' class='form-control reponse' aria-describedby='basic-addon1'>").attr("placeholder", datas[k])
+        .append($("<input type='text' class='form-control reponse' aria-describedby='basic-addon1'>").attr("placeholder", reponses[i])
         ))
         .append($("<div class='col-md-2' role='group'>")
         .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append($("<span class='glyphicon glyphicon-remove' aria-hidden='true'>")).on("click",supprimerQuestion)
@@ -90,7 +94,7 @@ $(function() {
 
       }
 
-      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
+      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' style='margin-top:1%;' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
 
       $("#SaveChanges").on("click",data, SaveChanges);
     }
@@ -110,69 +114,95 @@ $(function() {
       .append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append($("<span class='glyphicon glyphicon-remove' aria-hidden='true'>")).on("click",supprimerQuestion)
       )));
 
-      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
+      $("#questions").append($("<div id='plus' class='col-md-12' role='group'>").append($("<button type='button' style='margin-top:1%;' class='btn btn-default' aria-label='Left Align'>").append("<span class='glyphicon glyphicon-plus' aria-hidden='true'>").on("click",ajouterQuestion)));
 
     }
 
-    function Task(title, description, uri){
+    function Quizz(title, questions,reponses, uri){
         this.title = title;
-        this.description = description;
+        this.questions = questions;
+        this.reponses = reponses;
         this.uri = uri;
     }
 
     function SaveChanges(event) {
 
-      let dico = {};
-      let dicoKey;
+      var questions = "";
+      var reponses = "";
       let dataEvent = event.data;
       let i = 0;
-      $("#questions > div > input").each(function()
+      $("#questions div > div > input").each(function()
       {
 
         if (i%2 == 0)
         {
           if (this.value == "" || typeof this.value === 'undefined' || this.value == "undefined")
-            dicoKey = this.placeholder;
+            questions += this.placeholder+",";
           else
-            dicoKey = this.value;
+            questions +=this.value+",";
         }
         else
         {
           if (this.value == "" || typeof this.value === 'undefined' || this.value == "undefined")
-            dico[dicoKey] = this.placeholder;
+            reponses+= this.placeholder+",";
           else
-            dico[dicoKey] = this.value;
+            reponses+= this.value+",";
+
         }
         i++;
       });
-      var dicoJson = JSON.stringify(dico);
+      let newQuestions="";
+      let newReponses="";
 
-      var task = new Task(
+      console.log(questions);
+      console.log(reponses);
+      for(let i = 0; i<questions.length;i++)
+      {
+        if (i != questions.length-1)
+          newQuestions += questions[i];
+      }
+      for(let i = 0; i<reponses.length;i++)
+      {
+        if (i != reponses.length-1)
+          newReponses += reponses[i];
+      }
+
+      console.log(newQuestions);
+      console.log(newReponses);
+      //var dicoJson = JSON.stringify(dico);
+      //console.log(dicoJson);
+      var quizz = new Quizz(
         dataEvent.title,
-        dicoJson,
+        newQuestions,
+        newReponses,
         dataEvent.uri
       )
-      var data = new FormData();
       //console.log("dico");
 
-      data.append( "json" , JSON.stringify(task));
       let url = dataEvent.uri;
       let init =
       {
-        headers : {
-          Accept : 'application/json',
-          contentType: "application/json"
+        headers :{
+          'Accept' : 'application/json',
+          'Content-Type' : 'application/json'
         },
         method : "PUT",
-        body : data
+        body : JSON.stringify(quizz)
       };
       fetch(url, init)
       .then(response =>
       {
         console.log("Update Success");
+        return response;
       })
-      .catch(err => {console.warn(err)});
+      .then(response =>
+        {
+          console.log(response);
 
+        }
+      )
+      .catch(err => {console.warn(err)});
+      $("#close_modal").trigger("click")
       setTimeout(refreshTaskList, 100);
     }
 
@@ -190,9 +220,9 @@ $(function() {
       console.log("event : ");
       let url = "http://localhost:3000/quizz/"+event.data.id;
       let init ={
-        headers : {
-          Accept : 'application/json',
-          contentType: "application/json"
+        headers :{
+          'Accept' : 'application/json',
+          'Content-Type' : 'application/json'
         },
         method : "DELETE"
       }

@@ -16,6 +16,7 @@
 
   </head>
   <body>
+
     <div class="container">
       <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -24,66 +25,57 @@
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><a href="ajouterQuizz.html">Ajouter Quizz</a></li>
+              <li class="active"><a href="ajouterQuizz.html">Ajouter Quizz</a></li>
             </ul>
           </div>
         </div>
       </nav>
-
-      <div class="jumbotron">
-        <h1>Home</h1>
-        <h3>Manage the quizz</h3>
-      </div>
-
-      <div class="col-sm-8">
-        <ul class="list-group" id="quizz_list">
-
-        </ul>
-      </div>
-      <div class="col-sm-4" id="liste_button">
+      <div id="alert_div">
 
       </div>
 
-      <div class="col-sm-12" style="margin-bottom:15%;">
-        <button id ="button" type="button" class="btn btn-primary">Actualiser</button>
+      <div class="col-md-12" style="margin-bottom:2%;">
+        <div class="form-group" id="title_form">
+          <label class="control-label" for="Title">Quizz title</label>
+          <input type="text" class="form-control" id="Title" placeholder="Title Quizz">
+        </div>
       </div>
 
-
-
-
-
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="margin-bottom:5%;">
-          <div class="modal-header">
-            <button type="button" id="close_modal" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="title_modal">Modal title</h4>
-          </div>
-          <div class="modal-body" id="modalBody" style="margin-bottom:2%;">
-            <div class="row" style="margin-bottom:1%;">
-              <div class="col-md-8">
-                <input id="title_quest" type="text" class="form-control" placeholder="Title" aria-describedby="basic-addon1">
-
-              </div>
-            </div>
-            <div id="questions" class="row">
-
+      <div >
+        <div id="QuestRes">
+          <div>
+            <div class="col-md-5">
+              <label class="control-label" for="Question">Question name</label>
+              <input type="text" class="form-control" id="Question" placeholder="Question ?">
             </div>
 
+            <div class="col-md-5">
+              <label class="control-label" for="reponse">Question answer</label>
+              <input type="text" class="form-control" id="reponse" placeholder="Answer">
+            </div>
+            <div class="col-md-2" style="padding-top:2.2%;">
+              <button type="button" id="first" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span></button>
+            </div>
           </div>
-          <div class="modal-footer" >
-            <button type="button" id="SaveChanges" class="btn btn-primary">Save changes</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+
+        </div>
 
 
+
+        <div class="col-md-12" style="margin-top:2%;">
+          <button id="ajouterQuestRes" type="button" class="btn btn-primary" name="addQuestion"><span class="glyphicon glyphicon-plus"></span></button>
+        </div>
+
+      </div>
+      <hr>
+      <div class="col-md-12" style="margin-top:2%;">
+        <button type="button" style="float:right;overflow:auto;" class="btn btn-success" id="AddQuest" name="addQuestion">Ajouter Questionnaire</button>
+      </div>
 
 
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="js/home.js"></script>
+    <script src="js/ajouterQuizz.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
