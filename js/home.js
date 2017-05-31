@@ -118,16 +118,17 @@ $(function() {
 
     }
 
-    function Quizz(title, questions,reponses){
+    function Quizz(title, questions,reponses, uri){
         this.title = title;
         this.questions = questions;
         this.reponses = reponses;
+        this.uri = uri;
     }
 
     function SaveChanges(event) {
 
-      let questions = "";
-      let reponses = "";
+      var questions = "";
+      var reponses = "";
       let dataEvent = event.data;
       let i = 0;
       $("#questions div > div > input").each(function()
@@ -150,24 +151,31 @@ $(function() {
         }
         i++;
       });
-      questions.slice(0,-1);
-      reponses.slice(0,-1);
+      console.log(questions);
+      console.log(reponses);
+      questions.substring(0, questions.length-1);
+      reponses.slice(0, reponses.length-1);
+      console.log(questions);
+      console.log(reponses);
       //var dicoJson = JSON.stringify(dico);
       //console.log(dicoJson);
       var quizz = new Quizz(
         dataEvent.title,
         questions,
-        reponses
+        reponses,
+        dataEvent.uri
       )
-      var data = new FormData();
       //console.log("dico");
 
-      data.append( "json" , JSON.stringify({"title" : "lol"}));
       let url = dataEvent.uri;
       let init =
       {
+        headers :{
+          'Accept' : 'application/json',
+          'Content-Type' : 'application/json'
+        },
         method : "PUT",
-        body : JSON.stringify({"title" : "lol", "questions" : questions, "reponses" : reponses, "uri" : dataEvent.uri, "id":dataEvent.id})
+        body : JSON.stringify(quizz)
       };
       fetch(url, init)
       .then(response =>
@@ -178,10 +186,11 @@ $(function() {
       .then(response =>
         {
           console.log(response);
+
         }
       )
       .catch(err => {console.warn(err)});
-
+      $("#close_modal").trigger("click")
       setTimeout(refreshTaskList, 100);
     }
 
@@ -199,9 +208,9 @@ $(function() {
       console.log("event : ");
       let url = "http://localhost:3000/quizz/"+event.data.id;
       let init ={
-        headers : {
-          Accept : 'application/json',
-          contentType: "application/json"
+        headers :{
+          'Accept' : 'application/json',
+          'Content-Type' : 'application/json'
         },
         method : "DELETE"
       }
