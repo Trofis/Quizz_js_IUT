@@ -8,18 +8,11 @@
       "id": 1
     },
     {
-      "title": "Lol",
-      "questions": ",",
-      "reponses": ",",
+      "title": "ada",
+      "questions": "dada,",
+      "reponses": "dad,",
       "uri": "http://localhost:3000/quizz/2",
       "id": 2
-    },
-    {
-      "title": "Miam",
-      "questions": ",",
-      "reponses": ",",
-      "uri": "http://localhost:3000/quizz/3",
-      "id": 3
     }
   ]
 }

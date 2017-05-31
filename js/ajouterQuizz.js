@@ -43,12 +43,27 @@ $( "#AddQuest" ).click(function() {
     {
       let questions = "";
       let reponses = "";
+      var indi = 0;
       $("#QuestRes > div > div > input").each(function()
       {
-        if (this.id=="Question")
-          questions+=this.value+",";
-        else
-          reponses+=this.value+",";
+        if (this.value!="")
+        {
+          if (this.id=="Question")
+          {
+            if (this.length-2 == indi)
+              questions+=this.value;
+            else
+              questions+=this.value+",";
+          }
+          else
+          {
+            if (this.length-1 == indi)
+              reponses+=this.value;
+            else
+              reponses+=this.value+",";
+          }
+          indi++;
+        }
       });
 
       questions.slice(-1);
