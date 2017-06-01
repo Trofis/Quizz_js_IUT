@@ -2,17 +2,10 @@
   "quizz": [
     {
       "title": "Quizz Geo du monde",
-      "questions": "Capital du Portugal,Capital du Brésil,Capital de la France",
-      "reponses": "Porto,Brazilia,Paris",
+      "questions": "Capital du Portugal,Capital de la France",
+      "reponses": "Porto,Paris",
       "uri": "http://localhost:3000/quizz/1",
       "id": 1
-    },
-    {
-      "title": "ada",
-      "questions": "dada,",
-      "reponses": "dad,",
-      "uri": "http://localhost:3000/quizz/2",
-      "id": 2
     }
   ]
 }
