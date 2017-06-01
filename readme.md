@@ -1,2 +1,2 @@
 Launch JSON server :
-~/node_modules/json-server/bin/index.js ./tasks.json
+~/node_modules/json-server/bin/index.js ./Quizz.json

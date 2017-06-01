@@ -81,7 +81,7 @@ $(function() {
         $('#Table')
         .append($('<tr class="success">')
         .append($('<td>')
-        .text("La réponse à la question "+value+" est "+rep[i]+" et vous avez mis "+repQ[i])));
+        .text("La réponse à la question "+value+" est :"+rep[i]+" et vous avez mis : "+repQ[i])));
       }
       else {
         $('#Table')
@@ -93,7 +93,7 @@ $(function() {
 
       i++;
   });
-  $('#Question').append($("<p>").text("Vous avez donc un score de "+Compteur+" sur ce Quizz"));
+  $('#Question').append($("<p>").text("Vous avez donc un score de "+Compteur+"/"+rep.length+" sur ce Quizz"));
   $('#VerifQuizz').attr("Value","Retour");
   $('#VerifQuizz').unbind( "click" );
   $('#VerifQuizz').on("click",function(){window.location="home.html"});

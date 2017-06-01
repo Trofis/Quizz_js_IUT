@@ -31,41 +31,52 @@ $("#first").on("click",supprimerQuestion);
 
 $( "#AddQuest" ).click(function() {
     let titre = $("#Title").val();
-    if (titre== "")
+
+
+    let questions = "";
+    let reponses = "";
+    var indi = 0;
+    let res = true;
+    $("#QuestRes > div > div > input").each(function()
     {
-      $("#alert_div").append($("<div id='alert' class='alert alert-danger' role='alert'>").text("Vous devez mettre un titre au moins !"));
+      if (this.id=="Question")
+      {
+        if (this.length-2 == indi)
+          questions+=this.value;
+        else
+          questions+=this.value+",";
+      }
+      else
+      {
+        if (this.length-1 == indi)
+          reponses+=this.value;
+        else
+          reponses+=this.value+",";
+      }
+
+      if (this.value=="" || this.value == " ")
+      {
+        $(this).parent().attr("class","col-md-5 form-group has-error");
+
+        res = false;
+      }
+      console.log("iok");
+
+      indi++;
+    });
+
+    if (!res)
+    {
+      $("#alert_div").append($("<div id='alert' class='alert alert-danger' role='alert'>").text("Vous n'avez pas rempli tous les champs"));
 
       setTimeout(function(){$("#alert").remove()}, 5000);
-
-      $("#title_form").attr("class", "form-group has-error");
+      if (titre== "")
+      {
+        $("#title_form").attr("class", "form-group has-error");
+      }
     }
     else
     {
-      let questions = "";
-      let reponses = "";
-      var indi = 0;
-      $("#QuestRes > div > div > input").each(function()
-      {
-        if (this.value!="")
-        {
-          if (this.id=="Question")
-          {
-            if (this.length-2 == indi)
-              questions+=this.value;
-            else
-              questions+=this.value+",";
-          }
-          else
-          {
-            if (this.length-1 == indi)
-              reponses+=this.value;
-            else
-              reponses+=this.value+",";
-          }
-          indi++;
-        }
-      });
-
       questions.slice(-1);
       reponses.slice(-1);
       let quizz = new Quizz(
@@ -113,6 +124,9 @@ $( "#AddQuest" ).click(function() {
         })
       });
     }
+
+
+
 
 
 });
